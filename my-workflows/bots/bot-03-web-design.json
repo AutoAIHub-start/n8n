@@ -7,8 +7,8 @@
           "message"
         ]
       },
-      "id": "web-design-trigger-003",
-      "name": "Telegram Trigger (웹 디자인)",
+      "id": "3a2b3c4d-0001-4000-8000-000000000001",
+      "name": "Telegram Trigger (Web Design)",
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
@@ -17,8 +17,8 @@
       ],
       "credentials": {
         "telegramApi": {
-          "id": "app_web_dev_telegram_cred",
-          "name": "웹 디자인 Bot (@AppWebDev1_bot)"
+          "id": "webdesign_telegram_cred",
+          "name": "웹디자인 Bot (@AppWebDev1_bot)"
         }
       }
     },
@@ -26,7 +26,7 @@
       "parameters": {
         "modelName": "models/gemini-1.5-pro",
         "options": {
-          "systemInstruction": "你是团队的网页与UI设计专家 (@AppWebDev1_bot，即 웹 디자인)。\n\n【主要职责】\n1. 负责根据需求规划网页布局、UI/UX 设计方案及独立站搭建结构。\n2. 提供前端代码建议（HTML/CSS/JS、React 等）、组件搭建与网页优化指导。\n3. 与总控 President 和其他机器人配合，确保产品呈现出色的视觉与交互体验。"
+          "systemInstruction": "你是团队的网页设计与视觉开发专家 AppWebDev (@AppWebDev1_bot)。\n\n【主要职责与核心边界】\n1. 负责全面的设计开发与执行，包括且不限于：独立站网页设计（Web UI/UX）、B2B 独立 e-commerce 平台前端布局、品牌视觉识别、多国语言本地化页面设计等。\n2. 紧密协同总控（@Dgtmaneser_bot）及 CS 客户管理（@Novapase_bot），将买家体验与前端交互完美结合，确保全球各地区（中、韩、日、欧美）客户在访问平台时获得极致的视觉与操作体验。\n3. 不仅局限于眼前的静态排版，更要从长远发展出发，构建具备高度可扩展性、现代化、符合国际 B2B 标准的高性能数字资产与网页架构。\n4. 准确接收并执行设计指令，拒绝敷衍，交付兼具美感与实用价值的数字视觉方案。"
         }
       },
       "id": "web-design-ai-003",
@@ -40,12 +40,13 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $json.message.chat.id }}",
-        "text": "={{ $json.text }}",
-        "additionalFields": {}
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $('Telegram Trigger (Web Design)').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}"
       },
       "id": "web-design-send-003",
-      "name": "Send Response (웹 디자인)",
+      "name": "Send Response (웹디자인)",
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
@@ -54,15 +55,14 @@
       ],
       "credentials": {
         "telegramApi": {
-          "id": "app_web_dev_telegram_cred",
-          "name": "웹 디자인 Bot (@AppWebDev1_bot)"
+          "id": "webdesign_telegram_cred",
+          "name": "웹디자인 Bot (@AppWebDev1_bot)"
         }
       }
     }
   ],
-  "pinData": {},
   "connections": {
-    "Telegram Trigger (웹 디자인)": {
+    "Telegram Trigger (Web Design)": {
       "main": [
         [
           {
@@ -77,24 +77,12 @@
       "main": [
         [
           {
-            "node": "Send Response (웹 디자인)",
+            "node": "Send Response (웹디자인)",
             "type": "main",
             "index": 0
           }
         ]
       ]
     }
-  },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "tags": [
-    {
-      "name": "Novapass-System"
-    },
-    {
-      "name": "Web-Design-Bot"
-    }
-  ]
+  }
 }
