@@ -26,7 +26,7 @@
       "parameters": {
         "modelName": "models/gemini-1.5-pro",
         "options": {
-          "systemInstruction": "你是团队的总控 President (@Novapass_bot)。你的职责是接收用户的指令，分析意图，并将任务分发给对应的子 Bot（如网页设计、市场营销、国际物流、财务等）。"
+          "systemInstruction": "你是团队的总控 President (@Dgtmaneser_bot)。你的职责是接收用户的指令，分析意图，并将任务分发给对应的子 Bot（如网页设计、市场营销、国际物流、财务等）。"
         }
       },
       "id": "1a2b3c4d-0002-4000-8000-000000000002",
@@ -40,9 +40,10 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $json.message.chat.id }}",
-        "text": "={{ $json.text }}",
-        "additionalFields": {}
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $('Telegram Trigger (President)').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}"
       },
       "id": "1a2b3c4d-0003-4000-8000-000000000003",
       "name": "Send Message Back",
@@ -60,7 +61,6 @@
       }
     }
   ],
-  "pinData": {},
   "connections": {
     "Telegram Trigger (President)": {
       "main": [
@@ -84,17 +84,5 @@
         ]
       ]
     }
-  },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "tags": [
-    {
-      "name": "Telegram-Bots"
-    },
-    {
-      "name": "President"
-    }
-  ]
+  }
 }
