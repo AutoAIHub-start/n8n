@@ -1,0 +1,100 @@
+{
+  "name": "Bot-02-CS-Customer-Novapass",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ]
+      },
+      "id": "cs-customer-trigger-002",
+      "name": "Telegram Trigger (CS고객관리)",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "novapass_cs_telegram_cred",
+          "name": "CS고객관리 Bot (@Novapass_bot)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {
+          "systemInstruction": "你是团队的 CS客户管理专家 (@Novapass_bot，即노바)。\n\n【主要职责】\n1. 负责直接对接客户，提供专业、高效的客服咨询与解答。\n2. 记录客户反馈、协助处理售前售后问题，并将关键客户需求同步给订单管理与营销 Bot。\n3. 维护良好的客户体验与品牌形象。"
+        }
+      },
+      "id": "cs-customer-ai-002",
+      "name": "CS Customer AI Engine",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "cs-customer-send-002",
+      "name": "Send Response (CS고객관리)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "novapass_cs_telegram_cred",
+          "name": "CS고객관리 Bot (@Novapass_bot)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger (CS고객관리)": {
+      "main": [
+        [
+          {
+            "node": "CS Customer AI Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CS Customer AI Engine": {
+      "main": [
+        [
+          {
+            "node": "Send Response (CS고객관리)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Novapass-System"
+    },
+    {
+      "name": "CS-Customer-Bot"
+    }
+  ]
+}
