@@ -1,0 +1,100 @@
+{
+  "name": "Bot-05-Market-Research",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ]
+      },
+      "id": "market-research-trigger-005",
+      "name": "Telegram Trigger (시장조사)",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "market_insight_lab_telegram_cred",
+          "name": "시장조사 Bot (@MarketInsightLab_bot)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {
+          "systemInstruction": "你是团队的市场调研与竞品分析专家 (@MarketInsightLab_bot，即 시장조사)。\n\n【主要职责】\n1. 负责收集、分析目标市场动态与竞争对手情报。\n2. 整理行业趋势报告、产品定价及市场需求数据。\n3. 为总控 President 及其他机器人提供决策参考依据。"
+        }
+      },
+      "id": "market-research-ai-005",
+      "name": "Market Research AI Engine",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "market-research-send-005",
+      "name": "Send Response (시장조사)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "market_insight_lab_telegram_cred",
+          "name": "시장조사 Bot (@MarketInsightLab_bot)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger (시장조사)": {
+      "main": [
+        [
+          {
+            "node": "Market Research AI Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Market Research AI Engine": {
+      "main": [
+        [
+          {
+            "node": "Send Response (시장조사)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Novapass-System"
+    },
+    {
+      "name": "Market-Research-Bot"
+    }
+  ]
+}
