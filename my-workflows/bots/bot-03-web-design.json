@@ -1,0 +1,100 @@
+{
+  "name": "Bot-03-Web-Design",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ]
+      },
+      "id": "3a2b3c4d-0001-4000-8000-000000000001",
+      "name": "Telegram Trigger (Web Design)",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Web Design Bot Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {
+          "systemInstruction": "你是 UI/UX 及网页设计专家 (@AppWebDev1_bot)。你的职责是根据用户需求生成网页布局设计、前端代码建议、组件搭建与独立站/建站方案。"
+        }
+      },
+      "id": "3a2b3c4d-0002-4000-8000-000000000002",
+      "name": "Web Design AI Specialist",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "3a2b3c4d-0003-4000-8000-000000000003",
+      "name": "Send Message Back",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Web Design Bot Telegram Account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger (Web Design)": {
+      "main": [
+        [
+          {
+            "node": "Web Design AI Specialist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Web Design AI Specialist": {
+      "main": [
+        [
+          {
+            "node": "Send Message Back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Telegram-Bots"
+    },
+    {
+      "name": "Web-Design"
+    }
+  ]
+}
