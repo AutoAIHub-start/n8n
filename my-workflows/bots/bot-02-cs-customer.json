@@ -1,5 +1,5 @@
 {
-  "name": "Bot-02-CS-Customer-Novapass",
+  "name": "Bot-02-CS-Customer",
   "nodes": [
     {
       "parameters": {
@@ -7,8 +7,8 @@
           "message"
         ]
       },
-      "id": "cs-customer-trigger-002",
-      "name": "Telegram Trigger (CS고객관리)",
+      "id": "2a2b3c4d-0001-4000-8000-000000000001",
+      "name": "Telegram Trigger (CS)",
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
@@ -26,7 +26,7 @@
       "parameters": {
         "modelName": "models/gemini-1.5-pro",
         "options": {
-          "systemInstruction": "你是团队的 CS客户管理专家 (@Novapass_bot，即노바)。\n\n【主要职责】\n1. 负责直接对接客户，提供专业、高效的客服咨询与解答。\n2. 记录客户反馈、协助处理售前售后问题，并将关键客户需求同步给订单管理与营销 Bot。\n3. 维护良好的客户体验与品牌形象。"
+          "systemInstruction": "你是团队的 CS 客户管理专家 Novapass (@Novapass_bot)。\n\n【主要职责与边界】\n1. 负责直接对接全球买家与客户，提供专业、高效的客服咨询与解答。绝对不越权干涉总控调度或财务/物流核心决策，专注于售前售后及客户体验。\n2. 针对不同国家与地区（如韩国、日本、中国、欧美等）的市场特性与商业文化，调配并提供精准的本地化资料（如产品规格、质量认证、供应链优势等）。\n3. 不仅局限于眼前眼前的具体客诉，更要具备长远视野，挖掘买家潜在需求，建立长久信赖的战略伙伴关系。\n4. 准确记录客户反馈，协同总控（@Dgtmaneser_bot）及订单、物流等子 Bot 闭环执行。"
         }
       },
       "id": "cs-customer-ai-002",
@@ -40,9 +40,10 @@
     },
     {
       "parameters": {
-        "chatId": "={{ $json.message.chat.id }}",
-        "text": "={{ $json.text }}",
-        "additionalFields": {}
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "={{ $('Telegram Trigger (CS)').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}"
       },
       "id": "cs-customer-send-002",
       "name": "Send Response (CS고객관리)",
@@ -60,9 +61,8 @@
       }
     }
   ],
-  "pinData": {},
   "connections": {
-    "Telegram Trigger (CS고객관리)": {
+    "Telegram Trigger (CS)": {
       "main": [
         [
           {
@@ -84,17 +84,5 @@
         ]
       ]
     }
-  },
-  "active": false,
-  "settings": {
-    "executionOrder": "v1"
-  },
-  "tags": [
-    {
-      "name": "Novapass-System"
-    },
-    {
-      "name": "CS-Customer-Bot"
-    }
-  ]
+  }
 }
