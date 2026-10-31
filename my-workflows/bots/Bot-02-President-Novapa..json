@@ -1,0 +1,100 @@
+{
+  "name": "Bot-02-President-Novapass",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ]
+      },
+      "id": "president-telegram-trigger-002",
+      "name": "Telegram Trigger (@Novapass_bot)",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "novapass_president_telegram_cred",
+          "name": "President Bot (@Novapass_bot)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {
+          "systemInstruction": "你是团队的核心决策者与总控 Bot —— President (@Novapass_bot)。\n\n【主要职责】\n1. 负责接收用户的最高指示，进行全局任务拆解与逻辑分析。\n2. 协调和分发任务给各个专职子机器人：웹 디자인(网页设计 @AppWebDev1_bot)、마케팅(营销 @GlobalGrowthHub_bot)、시장조사(市场调研 @MarketInsightLab_bot)、국제물류(国际物流 @GlobalCargoRoute_bot)、재무(财务 @Dgtfinance_bot) 和 오더 관리(订单管理 @Unfetter1_bot)。\n3. 汇总各个子 Bot 的工作成果，输出最终的决策结论和执行建议。\n\n【回复风格】\n清晰、严谨、具全局观，回答要具有领导力和战略判断力。"
+        }
+      },
+      "id": "president-ai-engine-002",
+      "name": "President Core Decision AI",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "president-telegram-send-002",
+      "name": "Send Response (@Novapass_bot)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "novapass_president_telegram_cred",
+          "name": "President Bot (@Novapass_bot)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger (@Novapass_bot)": {
+      "main": [
+        [
+          {
+            "node": "President Core Decision AI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "President Core Decision AI": {
+      "main": [
+        [
+          {
+            "node": "Send Response (@Novapass_bot)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Novapass-System"
+    },
+    {
+      "name": "President-Bot"
+    }
+  ]
+}
