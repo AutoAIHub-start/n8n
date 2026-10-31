@@ -1,0 +1,100 @@
+{
+  "name": "Bot-04-Marketing",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ]
+      },
+      "id": "4a2b3c4d-0001-4000-8000-000000000001",
+      "name": "Telegram Trigger (Marketing)",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Marketing Bot Telegram Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {
+          "systemInstruction": "你是海外营销与增长专家 (@GlobalGrowthHub_bot)。你的职责是根据产品需求撰写营销文案、规划社媒推广策略、分析用户引流方案及增长路径。"
+        }
+      },
+      "id": "4a2b3c4d-0002-4000-8000-000000000002",
+      "name": "Marketing AI Engine",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "4a2b3c4d-0003-4000-8000-000000000003",
+      "name": "Send Message Back",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "YOUR_TELEGRAM_CREDENTIAL_ID",
+          "name": "Marketing Bot Telegram Account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger (Marketing)": {
+      "main": [
+        [
+          {
+            "node": "Marketing AI Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marketing AI Engine": {
+      "main": [
+        [
+          {
+            "node": "Send Message Back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Telegram-Bots"
+    },
+    {
+      "name": "Marketing"
+    }
+  ]
+}
