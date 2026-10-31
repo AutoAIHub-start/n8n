@@ -1,0 +1,100 @@
+{
+  "name": "Bot-04-Marketing",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ]
+      },
+      "id": "marketing-trigger-004",
+      "name": "Telegram Trigger (마케팅)",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "global_growth_hub_telegram_cred",
+          "name": "마케팅 Bot (@GlobalGrowthHub_bot)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-1.5-pro",
+        "options": {
+          "systemInstruction": "你是团队的海外营销与增长专家 (@GlobalGrowthHub_bot，即 마케팅)。\n\n【主要职责】\n1. 负责根据产品定位撰写营销文案、社媒推广方案与引流策略。\n2. 分析海外市场流量增长路径，协助策划品牌曝光与获客活动。\n3. 与总控 President 及其他机器人协作，推动业务增长。"
+        }
+      },
+      "id": "marketing-ai-004",
+      "name": "Marketing AI Engine",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.message.chat.id }}",
+        "text": "={{ $json.text }}",
+        "additionalFields": {}
+      },
+      "id": "marketing-send-004",
+      "name": "Send Response (마케팅)",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        720,
+        300
+      ],
+      "credentials": {
+        "telegramApi": {
+          "id": "global_growth_hub_telegram_cred",
+          "name": "마케팅 Bot (@GlobalGrowthHub_bot)"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger (마케팅)": {
+      "main": [
+        [
+          {
+            "node": "Marketing AI Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marketing AI Engine": {
+      "main": [
+        [
+          {
+            "node": "Send Response (마케팅)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "Novapass-System"
+    },
+    {
+      "name": "Marketing-Bot"
+    }
+  ]
+}
